@@ -15,9 +15,7 @@ public class Cogwheel<T> {
 
     public Cogwheel(int length, CycleList<T> list) {
         this(list);
-        if (length <= 0) {
-            throw new InvalidParameterException("The first parameter should be a positive interger.");
-        }
+        if (length <= 0)    throw new InvalidParameterException("The first parameter should be a positive interger.");
 
         Cogwheel<T> save;
         StringBuilder str = new StringBuilder();
