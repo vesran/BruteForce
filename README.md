@@ -1,5 +1,5 @@
 # BruteForce
-Brute force and combinaisons
+Brute force and combinaisons.
 
 The idea is to test/generate combinaisons of any objects. The model behind the algorithm has been inspired by gear models.
 It used two main classes: CycleList and Cogwheel.
