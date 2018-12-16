@@ -6,11 +6,21 @@ import java.util.function.Predicate;
 
 public class BruteForce {
     /**
-     * Create a file list.txt with all possible sequences that can be made with the given array.
-     * @param maxLength Maximal length of the sequences
-     * @param alphabet  Contains each individual element that will be used for building a sequence.
+     * Create a file list.txt with all possible sequences of length 1 to the specified length
+     * that can be made with the given array.
+     * @param maxLength Maximal length of sequences
+     * @param alphabet Contains each individual element that will be used for building a sequence.
      */
     public static <T> void inFile(int maxLength, T[] alphabet) {
+        BruteForce.inFile(1, maxLength, alphabet);
+    }
+    /**
+     * Create a file list.txt with all possible sequences that can be made with the given array.
+     * @param minLength Minimal length of sequences
+     * @param maxLength Maximal length of sequences
+     * @param alphabet  Contains each individual element that will be used for building a sequence.
+     */
+    public static <T> void inFile(int minLength, int maxLength, T[] alphabet) {
         if (maxLength <= 0 || alphabet == null || alphabet.length <= 0) {
             System.out.println("Parameters are incorrect !");
             throw new InvalidParameterException("First parameter should be a positive integer and the second non null with at least one element inside.");
@@ -22,7 +32,7 @@ public class BruteForce {
 
         try {
             writer = new PrintWriter("list.txt", "UTF-8");
-            int length = 1;
+            int length = minLength;
             do {
                 cw = new Cogwheel<>(length++, cList);
                 cw.action(writer);
@@ -30,6 +40,7 @@ public class BruteForce {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+
         } catch (UnsupportedEncodingException e) {
             System.out.println(e);
 
@@ -39,11 +50,22 @@ public class BruteForce {
     }
 
     /**
+     * Find the first sequence of String that makes the predicate test returns true.
+     * @param maxLength Maximal length of the sequences
+     * @param alphabet  Contains each individual element that will be used for building a sequence.
+     * @param pred         Is the condition to return a sequence.
+     * @return This method returns the sequence as a String or null if nothing has been found.
+     */
+    public static String find(int maxLength, String alphabet, Predicate<String> pred) {
+        return BruteForce.find(maxLength, alphabet.split(""), pred);
+    }
+
+    /**
      * Find the first sequence that makes the predicate test returns true.
      * @param maxLength Maximal length of the sequences
      * @param alphabet  Contains each individual element that will be used for building a sequence.
      * @param pred         Is the condition to return a sequence.
-     * @return This method returns the sequence as a String and null if nothing has been found.
+     * @return This method returns the sequence as a String or null if nothing has been found.
      */
     public static <T> String find(int maxLength, T[] alphabet, Predicate<String> pred) {
         if (maxLength <= 0 || alphabet == null || alphabet.length <= 0) {
@@ -58,7 +80,7 @@ public class BruteForce {
 
         do {
             cw = new Cogwheel<>(length++, cList);
-            if ((result = cw.action(pred)) != null) return result.toString(); // Check if cw.action(p) returns null
+            if ((result = cw.action(pred)) != null) return result.toString(); // Check if cw.action(p) has found something
         } while (length <= maxLength);
 
         System.out.println("Nothing has been found.");
